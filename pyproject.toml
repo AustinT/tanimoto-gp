@@ -1,3 +1,36 @@
+[build-system]
+# Minimum requirements for the build system to execute.
+# Chosen to allow versioning via git tags.
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tanimoto_gp"
+authors = [
+    {name = "Austin Tripp"},
+]
+description = "Exact Tanimoto Kernel Gaussian Processes"
+keywords = ["gaussian-process", "tanimoto"]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+dynamic = ["version"]  # version is set from git tags
+
+dependencies = [
+  "jax",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pre-commit"
+]
+
+[tool.setuptools]
+# Specifies location of package to install
+# Guidance from: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+packages = ["tanimoto_gp"]
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
