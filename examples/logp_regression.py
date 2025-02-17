@@ -39,7 +39,7 @@ def main(rng: random.Random, fp_size: int, N_train: int, N_test: int):
             mol
         )  # replace with "GetCountFingerprint" for fingerprint of size fpSize
 
-    gp = tanimoto_gp.TanimotoGP(smiles_to_fp, smiles_train, y_train)
+    gp = tanimoto_gp.ZeroMeanTanimotoGP(smiles_to_fp, smiles_train, y_train)
     gp_params = tanimoto_gp.TanimotoGP_Params(raw_amplitude=jnp.asarray(1.0), raw_noise=jnp.asarray(1e-2))
 
     print(f"Start MLL: {gp.marginal_log_likelihood(params=gp_params)}")
