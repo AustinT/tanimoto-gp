@@ -92,7 +92,7 @@ class TanimotoGP(BaseTanimotoGP):
         self._setup_kernel(smiles_train)
 
     def _get_training_targets(self) -> jnp.ndarray:
-        """Get uncentered training targets"""
+        """Get centered training targets"""
         return self._y_centered
 
     def predict_y(self, params: TanimotoGP_Params, smiles_test: list[str], full_covar: bool = True) -> jnp.ndarray:
