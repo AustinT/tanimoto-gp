@@ -38,11 +38,10 @@ class BaseTanimotoGP:
     def predict_f(self, params: TanimotoGP_Params, smiles_test: list[str], full_covar: bool = True) -> jnp.ndarray:
         fp_test = [self._fp_func(smiles) for smiles in smiles_test]
         K_test_train = jnp.asarray([DataStructs.BulkTanimotoSimilarity(fp, self._fp_train) for fp in fp_test])
-        K_test_test = (
-            jnp.asarray([DataStructs.BulkTanimotoSimilarity(fp, fp_test) for fp in fp_test])
-            if full_covar
-            else jnp.ones((len(smiles_test)), dtype=float)
-        )
+        if full_covar:
+            K_test_test = jnp.asarray([DataStructs.BulkTanimotoSimilarity(fp, fp_test) for fp in fp_test])
+        else:
+            K_test_test = jnp.ones((len(smiles_test)), dtype=float)
 
         return kgp.noiseless_predict(
             a=TRANSFORM(params.raw_amplitude),
