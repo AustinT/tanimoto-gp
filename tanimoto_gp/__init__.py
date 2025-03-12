@@ -37,7 +37,7 @@ class ZeroMeanTanimotoGP:
             y_train=self._y_train,
         )
 
-    def predict_f(self, params: TanimotoGP_Params, smiles_test: list[str], full_covar: bool = True) -> jnp.ndarray:
+    def predict_f(self, params: TanimotoGP_Params, smiles_test: list[str], full_covar: bool = True, from_train: bool = False) -> jnp.ndarray:
 
         # Construct kernel matrices
         fp_test = [self._fp_func(smiles) for smiles in smiles_test]
@@ -47,17 +47,27 @@ class ZeroMeanTanimotoGP:
         else:
             K_test_test = jnp.ones((len(smiles_test)), dtype=float)
 
-        return kgp.noiseless_predict(
-            a=TRANSFORM(params.raw_amplitude),
-            s=TRANSFORM(params.raw_noise),
-            k_train_train=self._K_train_train,
-            k_test_train=K_test_train,
-            k_test_test=K_test_test,
-            y_train=self._y_train,
-            full_covar=full_covar,
-        )
+        if self._L_cached is not None:
+            return kgp._L_noiseless_predict(
+                a=TRANSFORM(params.raw_amplitude),
+                L=self._L_cached,
+                k_test_train=K_test_train,
+                k__test_test=K_test_test,
+                y_train=self._y_train,
+                full_covar=full_covar
+            )
+        else:
+            return kgp.noiseless_predict(
+                a=TRANSFORM(params.raw_amplitude),
+                s=TRANSFORM(params.raw_noise),
+                k_train_train=self._K_train_train,
+                k_test_train=K_test_train,
+                k_test_test=K_test_test,
+                y_train=self._y_train,
+                full_covar=full_covar,
+            )
 
-    def predict_y(self, params: TanimotoGP_Params, smiles_test: list[str], full_covar: bool = True) -> jnp.ndarray:
+    def predict_y(self, params: TanimotoGP_Params, smiles_test: list[str], full_covar: bool = True, from_train: bool = False) -> jnp.ndarray:
         mean, covar = self.predict_f(params, smiles_test, full_covar)
         if full_covar:
             covar = covar + jnp.eye(len(smiles_test)) * TRANSFORM(params.raw_noise)
