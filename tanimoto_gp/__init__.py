@@ -68,7 +68,7 @@ class ZeroMeanTanimotoGP:
     def _get_L(self, params: TanimotoGP_Params) -> jnp.ndarray:
         """Get cached or compute new Cholesky factorization"""
         if self._L_cached is None:
-            a = TRANSFORM(params.raw_amplitue)
+            a = TRANSFORM(params.raw_amplitude)
             s = TRANSFORM(params.raw_noise)
             L = kgp._k_cholesky(
                 self._K_train_train,
