@@ -18,12 +18,14 @@ dynamic = ["version"]  # version is set from git tags
 
 dependencies = [
   "jax",
+  "kern_gp",
+  "rdkit",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
   "pytest",
-  "pre-commit"
+  "pre-commit",
 ]
 
 [tool.setuptools]
