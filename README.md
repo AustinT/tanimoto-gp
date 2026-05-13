@@ -1,34 +1,27 @@
 # Tanimoto GP
 
-Work in progress- a small library for Tanimoto kernel GPs.
+A small library for Tanimoto kernel Gaussian processes over molecules.
 
 For a minimal running example, see `examples/logp_regression.py`.
 
+## Installation
+
+```bash
+pip install tanimoto-gp
+```
+
 ## Development
 
-### Installation
-
-Install `kern_gp` from `https://github.com/AustinT/kernel-only-GP`.
-
-(currently works with v0.1.0, future compatibility unclear)
-
-### Formatting
-
-Use pre-commit to enforce formatting, large file checks, etc.
-
-If not already installed in your environment, run:
-
 ```bash
-conda install pre-commit
+# Install all deps (including dev group)
+uv sync
+
+# Install pre-commit hooks
+uv run pre-commit install
+
+# Run tests
+uv run pytest
 ```
-
-To install the precommit hooks:
-
-```bash
-pre-commit install
-```
-
-Now a series of useful checks will be run before any commit.
 
 ## List of possible improvements
 
